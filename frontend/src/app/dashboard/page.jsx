@@ -92,7 +92,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+    <div className="p-4 sm:p-6 md:p-8 min-h-screen bg-gradient-to-bro from-slate-50 to-slate-100">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         {/* Title Section */}
