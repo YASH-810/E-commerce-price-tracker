@@ -100,6 +100,6 @@ def scrape_product(url):
 
 # --- Test ---
 if __name__ == "__main__":
-    test_url = "https://www.amazon.in/dp/B0XXXXXXX"  # replace with real URL
+    test_url = "https://amzn.in/d/5xR3eLP"  # replace with real URL
     data = scrape_product(test_url)
     print(data)

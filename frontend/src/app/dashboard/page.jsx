@@ -37,7 +37,7 @@ export default function DashboardPage() {
     return () => unsub();
   }, []);
 
-  // ➤ Add a new product and trigger backend scraper
+  // ➤ Add a new product
   const handleAddProduct = async () => {
     if (!newProduct.name || !newProduct.link || !newProduct.price) {
       toast.error("Please fill all fields ⚠️");
@@ -45,10 +45,9 @@ export default function DashboardPage() {
     }
 
     try {
-      // Step 1: Add product to Firestore
       await addDoc(collection(db, "products"), {
         name: newProduct.name,
-        price: 0, // temporary until scraper updates
+        price: 0,
         targetPrice: Number(newProduct.price),
         link: newProduct.link,
         image: "/spinner.gif",
@@ -57,9 +56,10 @@ export default function DashboardPage() {
 
       setNewProduct({ name: "", link: "", price: "" });
 
-      // Step 2: Trigger Python backend scraper
       await toast.promise(
-        fetch("https://e-commerce-price-tracker.onrender.com/update-products", { method: "POST" }),
+        fetch("https://e-commerce-price-tracker.onrender.com/update-products", {
+          method: "POST",
+        }),
         {
           loading: "Scraping product data...",
           success: "Product added and backend scraping started ✅",
@@ -77,9 +77,7 @@ export default function DashboardPage() {
     setLoading(true);
     try {
       await toast.promise(
-        fetch("https://e-commerce-price-tracker.onrender.com/update-products", {
-          method: "POST",
-        }),
+        fetch("http://127.0.0.1:5000/update-products", { method: "POST" }),
         {
           loading: "Updating all products...",
           success: "Scraper triggered — prices will update soon ✅",
@@ -94,37 +92,39 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="p-8 min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="p-4 sm:p-6 md:p-8 min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        {/* Title Section */}
+        <div className="text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">
             E-Commerce Price Tracker
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
             Track and compare prices across platforms in real-time.
           </p>
         </div>
 
-        <div className="flex gap-2">
+        {/* Buttons Section */}
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <Button
-            className="gap-2"
+            className="gap-2 w-full sm:w-auto text-sm sm:text-base"
             onClick={handleUpdateAllProducts}
             disabled={loading}
           >
-            <RefreshCw size={18} />
+            <RefreshCw size={16} />
             {loading ? "Updating..." : "Fetch & Update Prices"}
           </Button>
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="gap-2">
-                <Plus size={18} /> Add Product
+              <Button className="gap-2 w-full sm:w-auto text-sm sm:text-base">
+                <Plus size={16} /> Add Product
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-[90vw] sm:max-w-md rounded-xl">
               <DialogHeader>
-                <DialogTitle className="text-xl font-semibold text-slate-800">
+                <DialogTitle className="text-lg sm:text-xl font-semibold text-slate-800">
                   Add New Product
                 </DialogTitle>
                 <div className="mt-4 space-y-4">
@@ -177,20 +177,30 @@ export default function DashboardPage() {
 
       {/* Product Grid */}
       {products.length === 0 ? (
-        <p className="text-gray-500">No products yet. Add one to start tracking!</p>
+        <p className="text-gray-500 text-center sm:text-left">
+          No products yet. Add one to start tracking!
+        </p>
       ) : (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div
+          className="
+            grid gap-4 sm:gap-6
+            grid-cols-1
+            xs:grid-cols-2
+            md:grid-cols-3
+            xl:grid-cols-4
+          "
+        >
           {products.map((product) => (
             <ProductCard
               key={product.id}
+              id={product.id}
               name={product.name || "Unnamed Product"}
               price={product.price || "Loading..."}
               lastPrice={product.lastPrice || product.price || 0}
-              targetPrice={product.targetPrice }
+              targetPrice={product.targetPrice}
               image={product.image}
               link={product.link || "#"}
-              priceHistory={product.priceHistory || []} // ✅ pass priceHistory
-              productId={product.id} // optional: needed if you want edit/delete
+              priceHistory={product.priceHistory || []}
             />
           ))}
         </div>
