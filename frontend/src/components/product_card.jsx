@@ -375,9 +375,12 @@ export default function ProductCard({
                       />
                       <XAxis
                         dataKey="date"
-                        tick={{ fontSize: 10, fill: "oklch(0.60 0.02 265)" }}
+                        tick={{ fontSize: 9, fill: "oklch(0.60 0.02 265)", angle: -35, textAnchor: "end", dy: 5 }}
                         axisLine={{ stroke: "oklch(0.28 0.015 265)" }}
                         tickLine={false}
+                        interval="preserveStartEnd"
+                        height={45}
+                        tickMargin={4}
                       />
                       <YAxis
                         dataKey="price"
