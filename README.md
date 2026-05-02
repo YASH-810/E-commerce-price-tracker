@@ -10,6 +10,12 @@ An automated price tracking web application that monitors product prices on e-co
 - **Modern UI**: Built with Next.js and Tailwind CSS featuring a responsive, dark-themed, glassmorphism design.
 - **Real-time Database**: Powered by Firebase Firestore for real-time synchronization between the backend scraper and the frontend application.
 
+## 📸 Screenshots
+
+| Dashboard Overview | Historical Price Chart |
+|:---:|:---:|
+| <img src="docs/dashboard-preview.png" alt="Dashboard Overview" width="400"/> | <img src="docs/chart-preview.png" alt="Price Chart" width="400"/> |
+
 ## 🚀 Tech Stack
 
 ### Frontend
